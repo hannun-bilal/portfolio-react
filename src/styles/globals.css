@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0a0a0a;
+  --foreground: #ffffff;
+  --primary: rgb(94, 234, 212);
+  --secondary: rgb(139, 92, 246);
+  --muted: #888888;
+  --border: rgba(255, 255, 255, 0.1);
+  --card: rgba(255, 255, 255, 0.05);
+  --nav-bg: rgba(10, 10, 10, 0.8);
+}
+
+/* Basis-Styles */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* Typography */
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight;
+    line-height: 1.1;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl font-bold tracking-tight;
+    line-height: 1.2;
+  }
+
+  h3 {
+    @apply text-2xl font-semibold;
+    line-height: 1.3;
+  }
+
+  p {
+    @apply text-base md:text-lg text-muted leading-relaxed;
+  }
+}
+
+/* Komponenten */
+@layer components {
+  /* Navigation */
+  .nav-container {
+    @apply fixed top-0 w-full z-50 transition-all duration-300;
+  }
+
+  .nav-scrolled {
+    background-color: var(--nav-bg);
+    @apply backdrop-blur-md border-b border-border;
+  }
+
+  .nav-link {
+    @apply font-mono text-sm text-muted hover:text-foreground transition-colors;
+  }
+
+  /* Sektionen */
+  .section {
+    @apply py-16 md:py-24 lg:py-32;
+  }
+
+  .container-padding {
+    @apply px-4 md:px-6 lg:px-8;
+  }
+
+  /* Karten */
+  .projekt-karte {
+    @apply bg-card backdrop-blur-sm rounded-lg border border-border 
+           p-6 transition-all duration-300 hover:border-primary/50;
+  }
+
+  .erfahrung-karte {
+    @apply bg-card backdrop-blur-sm rounded-lg border border-border 
+           p-6 transition-all duration-300;
+  }
+
+  /* Buttons */
+  .button-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg
+           bg-primary text-background font-medium transition-all
+           hover:opacity-90 active:scale-95;
+  }
+
+  .button-secondary {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg
+           border border-border text-foreground font-medium transition-all
+           hover:bg-card active:scale-95;
+  }
+}
+
+/* Utilities */
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .bg-gradient {
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--muted);
+  border-radius: 3px;
+}
+
+/* Selektion */
+::selection {
+  background-color: var(--primary);
+  color: var(--background);
+}
+
+/* Animationen */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.slide-in {
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+/* Focus Styles */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}

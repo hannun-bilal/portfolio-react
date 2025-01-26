@@ -1,101 +1,110 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import SkillCard from './components/SkillCard' // Stelle sicher, dass der Pfad korrekt ist
+import ProjectCard from './components/ProjectCard'
+// Definiere die Skills-Daten außerhalb der Komponente für bessere Performance
+const SKILLS = [
+  { name: 'React', category: 'frontend', level: 90 },
+  { name: 'TypeScript', category: 'frontend', level: 85 },
+  { name: 'Next.js', category: 'frontend', level: 88 },
+  { name: 'CSS/Tailwind', category: 'frontend', level: 92 },
+  { name: 'Node.js', category: 'backend', level: 87 },
+  { name: 'Python', category: 'backend', level: 85 },
+  { name: 'PostgreSQL', category: 'backend', level: 82 },
+  { name: 'GraphQL', category: 'backend', level: 80 },
+  { name: 'Docker', category: 'devops', level: 75 },
+  { name: 'AWS', category: 'devops', level: 78 },
+  { name: 'CI/CD', category: 'devops', level: 85 },
+]
+
+export default function Page() {
+  // State für Skill-Filterung
+  const [activeCategory, setActiveCategory] = useState<
+    'all' | 'frontend' | 'backend' | 'devops'
+  >('all')
+
+  // Filtere Skills basierend auf aktiver Kategorie
+  const filteredSkills =
+    activeCategory === 'all'
+      ? SKILLS
+      : SKILLS.filter((skill) => skill.category === activeCategory)
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <main className="min-h-screen bg-background">
+      {/* Hero Section mit Name und Rolle */}
+      <section className="pt-32 pb-16 px-6">
+        <div className="max-w-6xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="font-mono text-primary mb-4"
+          >
+            &lt;Softwareentwickler/&gt;
+          </motion.div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          <h1 className="text-6xl md:text-7xl font-bold mb-6 text-white">
+            Bilal Ha
+          </h1>
+
+          <p className="text-xl md:text-2xl text-muted mb-12">
+            Softwareentwickler & Full-Stack Engineer
+          </p>
+
+          {/* Kategorie-Filter */}
+          <div className="flex justify-center gap-4 mb-12">
+            {['all', 'frontend', 'backend', 'devops'].map((category) => (
+              <button
+                key={category}
+                onClick={() =>
+                  setActiveCategory(category as typeof activeCategory)
+                }
+                className={`px-4 py-2 rounded-full font-mono text-sm transition-colors
+                  ${
+                    activeCategory === category
+                      ? 'bg-primary text-background'
+                      : 'text-muted hover:text-primary'
+                  }`}
+              >
+                {category.charAt(0).toUpperCase() + category.slice(1)}
+              </button>
+            ))}
+          </div>
+
+          {/* Skills Grid */}
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12"
+            layout
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <AnimatePresence mode="popLayout">
+              {filteredSkills.map((skill) => (
+                <SkillCard
+                  key={skill.name}
+                  name={skill.name}
+                  level={skill.level}
+                  category={skill.category}
+                />
+              ))}
+            </AnimatePresence>
+          </motion.div>
+
+          <section className="container mx-auto px-4 py-16">
+            <h2 className="text-3xl font-bold mb-8">Projekte</h2>
+            <ProjectCard />
+          </section>
+
+          {/* Call-to-Action Buttons */}
+          <div className="flex justify-center gap-6">
+            <a href="#projekte" className="button-primary">
+              Projekte ansehen
+            </a>
+            <a href="#kontakt" className="button-secondary">
+              Kontakt aufnehmen
+            </a>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+      </section>
+    </main>
+  )
 }
